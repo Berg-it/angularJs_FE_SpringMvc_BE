@@ -1,0 +1,70 @@
+<div class="input-group input-group-lg">
+    <span class="input-group-addon">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <input type="text" class="form-control" placeholder="Username" ng-model="name" disabled>
+    <span class="input-group-btn">
+       <button class="btn btn-default" ng-click="openModalWindow('myModalContent.html','Name')">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </button>
+    </span>
+</div>
+<br>
+<div class="input-group input-group-lg">
+    <span class="input-group-addon">Last name</span>
+    <input type="text" class="form-control" placeholder="Username" ng-model="lastname" disabled>
+    <span class="input-group-btn">
+        <button class="btn btn-default" ng-click="openModalWindow('myModalContent.html','Last Name')">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </button>
+    </span>
+</div>
+<br>
+<div class="input-group input-group-lg">
+    <span class="input-group-addon">Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <input type="text" class="form-control" placeholder="Username" ng-model="mail" disabled>
+    <span class="input-group-btn">
+        <button class="btn btn-default" ng-click="openModalWindow('myModalContent.html','Email')">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </button>
+    </span>
+</div>
+<br>
+<div class="input-group input-group-lg">
+    <span class="input-group-addon">Password&nbsp;</span>
+    <input type="password" class="form-control" placeholder="Username" ng-model="pass" disabled>
+    <span class="input-group-btn">
+        <button class="btn btn-default" ng-click="openModalWindow('myModalContent.html','Password')">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </button>
+    </span>
+</div>
+
+<br>
+<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+<button type="button" class="btn btn-primary pull-right" ng-click="doUpdateProfile()"  ng-show="toUpdate()" >Save</button>
+
+
+
+<br>
+<!-- Large modal -->
+<div ng-controller="ModalWindowShow">
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Edit {{nameOperation}}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon">Current {{nameOperation}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <input type="text" class="form-control" placeholder="Username"  disabled ng-model="oldValue">
+            </div>
+            <br>
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon">New {{nameOperation}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <input type="text" class="form-control" placeholder="Username" ng-change="selected.item = newValueTmp"     ng-model="newValueTmp">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+</div>

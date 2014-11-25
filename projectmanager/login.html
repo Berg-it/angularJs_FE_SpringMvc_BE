@@ -1,0 +1,38 @@
+
+<body ng-app="MonApp">
+<div class="container" ng-controller='authCtrl'>
+	<h3 class="text-muted">PjMg</h3>
+	<ul class="nav nav-tabs" role="tablist" id="myTab">
+	  <li role="presentation" class="active"><a href="#">Connection</a></li>
+	  <li role="presentation"><a href="aboutUs.html">About us</a></li>
+	</ul>
+	<form role="form" name="myForm" ng-submit="doLogin()">
+	  <h2>
+	  	Please sign in
+	  </h2>
+	  <div class="has-feedback">
+		  <input  name="myEmail"   type="email"   class="form-control"    placeholder="Email address"
+		  	      required="" autofocus="" ng-model="mail" ng-init="mail='test@test.com'">
+		  	     <span class="error" ng-show="myForm.$error.email">
+		  	     	<span class="glyphicon glyphicon-remove form-control-feedback"></span>
+		  	     </span>
+		  	     <span class="error" ng-show="myForm.myEmail.$valid">
+		  	     	<span class="glyphicon glyphicon-ok form-control-feedback"></span>
+		  	     </span>	  	     
+	  </div>
+
+	  <div class="has-feedback">
+		  <input name="myPassword" type="password" class="form-control"    placeholder="Password"      
+		  		 required="" ng-model='pass' ng-init="pass='7777777777777777'" ng-minlength="8" maxlength="16">
+		  	     <span class="error" ng-show="myForm.$error.minlength">
+		  	     	<span class="glyphicon glyphicon-remove form-control-feedback"></span>
+		  	     </span>	
+	  </div>
+	  <div class="checkbox">
+	    <label>
+	       <input type="checkbox" value="remember-me"> Remember me
+	    </label>
+	  </div>
+	  <button   class="btn btn-lg btn-primary btn-block" type="submit" >Sign in</button>
+	</form>
+</div>

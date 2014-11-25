@@ -1,0 +1,88 @@
+<html>
+
+<head>
+    <title>PjMg</title>
+    <script src="lib/angular.js"></script>
+    <script src="lib/angular-route.js"></script>
+    <script src="lib/jquery-1.11.1.min.js"></script>
+    <script src="lib/toaster.js"></script>
+    <script src="lib/angular-cookies.js"></script>
+    <script src="lib/angular-resource.js"></script>
+    <script src="lib/ui-bootstrap-tpls-0.12.0.min.js"></script>
+    <script src="src/module/ngSessionStorage.js"></script>
+    <script src="src/module/moduleApplication.js"></script>
+    <script src="src/route/appRouter.js"></script>
+    <script src="src/controllers/homeController.js"></script>
+    <script src="src/controllers/modalWindowController.js"></script>
+    <script src="src/services/homeService.js"></script>
+    <script src="src/directives/translateLinkDirectives.js"></script>
+
+
+
+    <link rel="stylesheet" type="text/css" href="css/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/dist/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/toaster.css"/>
+</head>
+
+<body ng-app="MyHomeApp" ng-controller='homeCtrl'>
+<div class="container-fluid" >
+    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">PjMg</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href><span class="glyphicon glyphicon-stats"></span><span ng-translate-link name="horizontalLink1"></span></label></a></li>
+                    <li><a href><span class="glyphicon glyphicon-wrench"></span><span ng-translate-link name="horizontalLink2"></span></a></li>
+                    <li  ng-class="{active:isSelectedLink('profile')}"><a href  ng-click="setSelectedLink('profile','Profile')">
+                        <span class="glyphicon glyphicon-user"></span><span ng-translate-link name="horizontalLink3"></span></a></li>
+                    <li  ng-class="{active:isSelectedLink('presence')}"><a href ng-click="verifUserConnect(); setSelectedLink('presence','Entering Attendance')">
+                        <span class="glyphicon glyphicon-check"></span><span ng-translate-link name="horizontalLink4"></span></a></li>
+                    <li><a href><span class="glyphicon glyphicon-comment"></span><span ng-translate-link name="horizontalLink5"></span></a></li>
+                    <li><a href ng-click="changeLanguage()"><span class="glyphicon glyphicon-globe"></span>{{usedLanguage}}</a></li>
+                    <li><a href ng-click="doLogOut()"><span class="glyphicon glyphicon-off"></span></a></li>
+                </ul>
+            </div><!-- /.nav-collapse -->
+        </div><!-- /.container -->
+    </nav>
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar">Home</span>
+            <span class="icon-bar">Home</span>
+            <span class="icon-bar">Home</span>
+        </button>
+        <a class="navbar-brand" href="#">Project name</a>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <h3 class="text-muted"></h3>
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+            <div class="list-group">
+                <a href ng-click="setSelectedLink('wiki','Wiki')"                     ng-class="{active:isSelectedLink('wiki')}"      class="list-group-item">
+                    <span ng-translate-link name="verticalLink1"></span></a>
+                <a href ng-click="setSelectedLink('taskList','Task Assigned To Me')"  ng-class="{active:isSelectedLink('taskList')}" class="list-group-item">
+                    <span ng-translate-link name="verticalLink2"></span></a>
+                <a href class="list-group-item">Link</a>
+                <a href class="list-group-item">Link</a>
+                <a href class="list-group-item">Link</a>
+            </div>
+        </div>
+        <div>
+            <div><h1>{{pageTitle}}</h1><hr></div>
+            <div class="col-sm-8 blog-main" ng-view>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
