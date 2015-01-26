@@ -1,0 +1,95 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch" 
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch
+		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jdbc 
+		http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
+		
+		
+<!-- 		utilisée comme ItemReader pour lire notre fichier -->
+<bean id="personneReaderCSV" class="org.springframework.batch.item.file.FlatFileItemReader" >
+ <property name="resource" value="input/personnes.txt" />
+	 <property name="lineMapper">
+		 <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				 <property name="lineTokenizer">
+				 <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+					 <property name="delimiter" value=","/><!-- le séparateur de champ est le caractère -->
+					 <property name="names" value="id,nom,prenom,civilite" /><!-- chaque ligne est composée des champs -->
+			 	</bean>
+			 </property>
+			 <property name="fieldSetMapper">
+				 <bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+					<property name="targetType" value="tn.berg.bean.Personne" /><!--toutes ces informations seront stockées dans la classe Personne -->
+				  </bean>
+			 </property>
+		 </bean>
+	 </property>
+ </bean>		
+
+<!-- Processor  -->
+<bean id="personProcessor" class="tn.berg.processor.PersonProcessor" >
+	
+</bean>
+
+<!-- Writer  -->
+<bean id="personDaoWriter" class="tn.berg.writer.PersonJdbcWriter" >
+	<property name="jdbcTemplate" ref="jdbcTemplate" />
+</bean>
+
+<!-- Job definition  -->
+<job id="importPersonnes"  xmlns="http://www.springframework.org/schema/batch">
+	 <step id="readWritePersonne">
+		 <tasklet>
+			 <chunk reader="personneReaderCSV" writer="personDaoWriter" processor="personProcessor" commit-interval="2" />
+		 </tasklet>
+	 </step>
+</job> 
+
+<!-- job Repository -->
+<!-- stored job-meta in database -->
+	<bean id="jobRepository"
+		class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="databaseType" value="mysql" />
+	</bean>
+ 
+	<bean id="transactionManager"
+		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+		
+<!-- create job-meta tables automatically -->
+  <jdbc:initialize-database data-source="dataSource">
+	<jdbc:script location="org/springframework/batch/core/schema-drop-mysql.sql" />
+	<jdbc:script location="org/springframework/batch/core/schema-mysql.sql" />
+  </jdbc:initialize-database>
+  
+  
+<!-- Job Launcher  -->
+<bean id="jobLauncher"
+		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+</bean>
+	
+<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${driverClassName}"/>
+    <property name="url" value="${url}"/>
+    <property name="username" value="${username}"/>
+    <property name="password" value="${password}"/>
+</bean>
+
+<context:property-placeholder location="jdbc.properties"/> 
+ 
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <property name="dataSource" ref="dataSource"/>
+</bean>
+		
+		
+		
+</beans>		
